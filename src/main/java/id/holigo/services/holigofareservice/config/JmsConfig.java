@@ -25,6 +25,8 @@ public class JmsConfig {
 
     public static final String SET_USER_OTP_QUEUE = "set-user-otp-queue";
 
+    public static final String GET_DETAIL_FARE_PRODUCT = "get-detail-fare-product";
+
     @Bean
     public MessageConverter jacksonJmsMessageConverter(ObjectMapper objectMapper) {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
