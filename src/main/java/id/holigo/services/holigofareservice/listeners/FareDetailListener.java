@@ -33,7 +33,7 @@ public class FareDetailListener {
     @JmsListener(destination = JmsConfig.GET_DETAIL_FARE_PRODUCT)
     public void getDetailFareProduct(@Payload FareDetailDto fareDetailDto, Message message) throws JMSException {
         Fare fare = fareService.calculate(fareDetailDto.getUserId(), fareDetailDto.getProductId(),
-                fareDetailDto.getNraAmount());
+                fareDetailDto.getNtaAmount(), fareDetailDto.getNraAmount());
         FareDto fareDto = fareMapper.fareToFareDto(fare);
         jmsTemplate.convertAndSend(message.getJMSReplyTo(), fareDto);
     }

@@ -35,6 +35,12 @@ public class Fare {
     @Convert(converter = UserGroupEnumConverter.class)
     private UserGroupEnum userGroup;
 
+    @Column(columnDefinition = "decimal(12,2) default 0")
+    private BigDecimal fareAmount;
+
+    @Column(columnDefinition = "decimal(12,2) default 0")
+    private BigDecimal ntaAmount;
+
     @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal nraAmount;
 
@@ -64,6 +70,9 @@ public class Fare {
 
     @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal prcAmount;
+
+    @Column(columnDefinition = "decimal(10,2) default 0")
+    private BigDecimal lossAmount;
 
     @CreationTimestamp
     @Column(updatable = false)

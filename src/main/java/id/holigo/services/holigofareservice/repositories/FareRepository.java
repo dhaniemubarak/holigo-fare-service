@@ -9,6 +9,6 @@ import id.holigo.services.common.model.UserGroupEnum;
 import id.holigo.services.holigofareservice.domain.Fare;
 
 public interface FareRepository extends JpaRepository<Fare, Long> {
-    Optional<Fare> findByProductIdAndUserGroupAndNraAmount(Integer productId, UserGroupEnum userGroup,
-            BigDecimal nraAmount);
+    Optional<Fare> findByProductIdAndUserGroupAndNtaAmountAndNraAmount(Integer productId, UserGroupEnum userGroup,
+            BigDecimal ntaAmount, BigDecimal nraAmount);
 }

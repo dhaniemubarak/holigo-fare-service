@@ -22,10 +22,11 @@ public class FareDto implements Serializable {
 
     private Integer productId;
 
+    private BigDecimal ntaAmount;
+
     private BigDecimal nraAmount;
 
-    @Builder.Default
-    private BigDecimal fareAmount = new BigDecimal("0.00");
+    private BigDecimal fareAmount;
 
     private BigDecimal cpAmount;
 
@@ -41,11 +42,11 @@ public class FareDto implements Serializable {
 
     private BigDecimal ipcAmount;
 
-    private BigDecimal hvcAmount;
+    private BigDecimal hpcAmount;
 
     private BigDecimal prcAmount;
 
-    private BigDecimal mucAmount;
+    private BigDecimal lossAmount;
 
     private Timestamp createdAt;
 

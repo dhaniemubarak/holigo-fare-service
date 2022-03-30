@@ -34,6 +34,7 @@ public class FareServiceImplTest {
     UserDto user;
     Integer productId = 1;
     BigDecimal nraAmount;
+    BigDecimal ntaAmount;
     BigDecimal muAmount;
 
     MarginAllocation marginAllocation;
@@ -42,6 +43,7 @@ public class FareServiceImplTest {
     void setUp() throws JsonMappingException, JsonProcessingException, JMSException {
         user = userService.getUserById(5L);
         nraAmount = new BigDecimal(100000);
+        ntaAmount = new BigDecimal(1000000);
         Optional<MarginAllocation> fetchMarginAllocation = marginRepository
                 .findByUserGroupAndProductId(user.getUserGroup(), productId);
         if (fetchMarginAllocation.isPresent()) {
@@ -61,14 +63,13 @@ public class FareServiceImplTest {
 
     @Test
     void testCalculate() {
-        Calculate calculate = new Calculate(user, marginAllocation, nraAmount);
+        Calculate calculate = new Calculate(user, marginAllocation, nraAmount, nraAmount);
 
         assertEquals(calculate.getNraAmount(), nraAmount);
         assertEquals(BigDecimal.valueOf(55000.00).setScale(2),
                 calculate.getCpAmount());
         assertEquals(new BigDecimal(20000.00).setScale(2),
                 calculate.getIpcAmount().setScale(2, RoundingMode.HALF_DOWN));
-        assertEquals(new BigDecimal(5000.00).setScale(2), calculate.getHpAmount());
         assertEquals(new BigDecimal(5000.00).setScale(2), calculate.getHvAmount().setScale(2, RoundingMode.HALF_DOWN));
     }
 }

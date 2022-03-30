@@ -36,8 +36,9 @@ public class FareController {
 
     @GetMapping("api/v1/fare")
     public ResponseEntity<FareDto> get(@RequestParam("userId") Long userId,
-            @RequestParam("productId") Integer productId, @RequestParam("nraAmount") BigDecimal nraAmount) {
-        Fare fare = fareService.calculate(userId, productId, nraAmount);
+            @RequestParam("productId") Integer productId, @RequestParam("ntaAmount") BigDecimal ntaAmount,
+            @RequestParam("nraAmount") BigDecimal nraAmount) {
+        Fare fare = fareService.calculate(userId, productId, ntaAmount, nraAmount);
 
         return new ResponseEntity<>(fareMapper.fareToFareDto(fare), HttpStatus.OK);
     }

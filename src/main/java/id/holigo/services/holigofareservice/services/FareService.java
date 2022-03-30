@@ -5,5 +5,5 @@ import java.math.BigDecimal;
 import id.holigo.services.holigofareservice.domain.Fare;
 
 public interface FareService {
-    Fare calculate(Long userId, Integer productId, BigDecimal nraAmount);
+    Fare calculate(Long userId, Integer productId, BigDecimal ntaAmount, BigDecimal nraAmount);
 }

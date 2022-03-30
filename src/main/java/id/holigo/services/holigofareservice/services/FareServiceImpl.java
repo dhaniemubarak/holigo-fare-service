@@ -33,17 +33,17 @@ public class FareServiceImpl implements FareService {
     private MarginAllocation marginAllocation;
 
     @Override
-    public Fare calculate(Long userId, Integer productId, BigDecimal nraAmount) {
+    public Fare calculate(Long userId, Integer productId, BigDecimal ntaAmount, BigDecimal nraAmount) {
         Fare fare = null;
         try {
 
             UserDto user = userService.getUserById(userId);
-            Optional<Fare> fetchFare = fareRepository.findByProductIdAndUserGroupAndNraAmount(productId,
-                    user.getUserGroup(), nraAmount);
+            Optional<Fare> fetchFare = fareRepository.findByProductIdAndUserGroupAndNtaAmountAndNraAmount(productId,
+                    user.getUserGroup(), ntaAmount, nraAmount);
             if (fetchFare.isPresent()) {
                 fare = fetchFare.get();
             } else {
-                Calculate calculation = new Calculate(user, getMarginAllocation(user, productId), nraAmount);
+                Calculate calculation = new Calculate(user, getMarginAllocation(user, productId), ntaAmount, nraAmount);
                 Fare fareCalculation = setFareAllocation(user, productId, nraAmount, calculation);
                 Fare fareSaved = fareRepository.save(fareCalculation);
                 fare = fareSaved;
@@ -62,9 +62,9 @@ public class FareServiceImpl implements FareService {
         } else {
             marginAllocation = MarginAllocation.builder().userGroup(user.getUserGroup())
                     .productId(productId)
-                    .cpPercentage(0.55)
+                    .cpPercentage(0.00)
                     .ipPercentage(0.2)
-                    .mpPercentage(0.05)
+                    .mpPercentage(0.00)
                     .hvPercentage(0.05)
                     .prPercentage(0.05)
                     .hpPercentage(0.00)
@@ -78,6 +78,8 @@ public class FareServiceImpl implements FareService {
                 .productId(productId)
                 .nraAmount(nraAmount)
                 .userGroup(user.getUserGroup())
+                .fareAmount(calculation.getFareAmount())
+                .ntaAmount(calculation.getNtaAmount())
                 .cpAmount(calculation.getCpAmount())
                 .mpAmount(calculation.getMpAmount())
                 .ipAmount(calculation.getIpAmount())
@@ -87,6 +89,7 @@ public class FareServiceImpl implements FareService {
                 .ipcAmount(calculation.getIpcAmount())
                 .hpcAmount(calculation.getHpcAmount())
                 .prcAmount(calculation.getPrcAmount())
+                .lossAmount(calculation.getLossAmount())
                 .build();
     }
 
