@@ -24,6 +24,9 @@ public class FareDto implements Serializable {
 
     private BigDecimal nraAmount;
 
+    @Builder.Default
+    private BigDecimal fareAmount = new BigDecimal("0.00");
+
     private BigDecimal cpAmount;
 
     private BigDecimal mpAmount;

@@ -18,4 +18,6 @@ public class FareDetailDto {
     private Integer productId;
 
     private BigDecimal nraAmount;
+
+    private BigDecimal ntaAmount;
 }
