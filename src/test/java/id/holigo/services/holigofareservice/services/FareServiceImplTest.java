@@ -65,11 +65,11 @@ public class FareServiceImplTest {
     void testCalculate() {
         Calculate calculate = new Calculate(user, marginAllocation, nraAmount, nraAmount);
 
-        assertEquals(calculate.getNraAmount(), nraAmount);
+        assertEquals(calculate.getNraAmount(), nraAmount.setScale(2));
         assertEquals(BigDecimal.valueOf(55000.00).setScale(2),
                 calculate.getCpAmount());
         assertEquals(new BigDecimal(20000.00).setScale(2),
-                calculate.getIpcAmount().setScale(2, RoundingMode.HALF_DOWN));
-        assertEquals(new BigDecimal(5000.00).setScale(2), calculate.getHvAmount().setScale(2, RoundingMode.HALF_DOWN));
+                calculate.getIpcAmount());
+        assertEquals(new BigDecimal(5000.00).setScale(2), calculate.getHvAmount());
     }
 }

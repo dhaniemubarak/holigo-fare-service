@@ -76,7 +76,7 @@ public class FareServiceImpl implements FareService {
     private Fare setFareAllocation(UserDto user, Integer productId, BigDecimal nraAmount, Calculate calculation) {
         return Fare.builder()
                 .productId(productId)
-                .nraAmount(nraAmount)
+                .nraAmount(calculation.getNraAmount())
                 .userGroup(user.getUserGroup())
                 .fareAmount(calculation.getFareAmount())
                 .ntaAmount(calculation.getNtaAmount())
