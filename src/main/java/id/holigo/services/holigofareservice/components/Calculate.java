@@ -7,12 +7,9 @@ import id.holigo.services.common.model.UserDto;
 import id.holigo.services.holigofareservice.domain.MarginAllocation;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
-// @Component
 @Getter
 @Setter
-@Slf4j
 public class Calculate {
 
     public Calculate(UserDto user, MarginAllocation marginAllocation, BigDecimal ntaAmount, BigDecimal nraAmount) {
@@ -73,7 +70,6 @@ public class Calculate {
 
     public void setPiAmount(BigDecimal nraAmount) {
         BigDecimal ip = nraAmount.multiply(new BigDecimal(ipPercentage)).setScale(0, RoundingMode.DOWN);
-        log.info("setPiAmount ip -> {}", ip);
         if (getUser().getOfficialId() == null) {
             setIpcAmount(ip);
             this.ipAmount = new BigDecimal("0.00");
@@ -97,7 +93,7 @@ public class Calculate {
 
     public void setPrAmount(BigDecimal nraAmount) {
         BigDecimal pr = nraAmount.multiply(new BigDecimal(prPercentage)).setScale(0, RoundingMode.DOWN);
-        if (getUser().getParentId() == null) {
+        if (getUser().getParent() == null) {
             setPrcAmount(pr);
             this.prAmount = new BigDecimal("0.00");
         } else {
@@ -111,8 +107,8 @@ public class Calculate {
     }
 
     public void setHpcAmount(BigDecimal nraAmount) {
-        BigDecimal hpcAmount = nraAmount.multiply(new BigDecimal(hpcPercentage)).setScale(0, RoundingMode.UP);
-        this.hpcAmount = hpcAmount.setScale(2, RoundingMode.HALF_DOWN);
+        BigDecimal hpcAmount = nraAmount.multiply(new BigDecimal(hpcPercentage)).setScale(0, RoundingMode.HALF_DOWN);
+        this.hpcAmount = hpcAmount;
     }
 
     public void setPrcAmount(BigDecimal prcAmount) {
@@ -120,15 +116,6 @@ public class Calculate {
     }
 
     public void setFareAmount(BigDecimal nraAmount) {
-
-        log.info("getCpAmount -> {}", getCpAmount());
-        log.info("getHpAmount -> {}", getHpAmount());
-        log.info("getHvAmount -> {}", getHvAmount());
-        log.info("getIpcAmount -> {}", getIpcAmount());
-        log.info("getPrcAmount -> {}", getPrcAmount());
-        log.info("getMpAmount -> {}", getMpAmount());
-        log.info("getPrAmount -> {}", getPrAmount());
-        log.info("getHpcAmount -> {}", getHpcAmount());
 
         BigDecimal margin = getCpAmount().add(getHpAmount()).add(getHvAmount()).add(getIpcAmount()).add(getPrcAmount())
                 .add(getIpAmount()).add(getMpAmount()).add(getPrAmount()).add(getHpcAmount());

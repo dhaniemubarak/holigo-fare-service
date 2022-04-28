@@ -67,7 +67,7 @@ public class FareServiceImplTest {
         assertEquals(calculate.getNraAmount(), nraAmount.setScale(2));
         assertEquals(BigDecimal.valueOf(55000.00).setScale(2),
                 calculate.getCpAmount());
-        assertEquals(new BigDecimal(20000.00).setScale(2),
+        assertEquals(new BigDecimal(0.00).setScale(2),
                 calculate.getIpcAmount());
         assertEquals(new BigDecimal(5000.00).setScale(2), calculate.getHvAmount());
     }

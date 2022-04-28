@@ -1,10 +1,17 @@
 package id.holigo.services.common.model;
 
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -12,18 +19,33 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserDto implements Serializable {
 
-    static final long serialVersionUID = -5815566940065181210L;
+    static final long serialVersionUID = -5181210L;
+
     private Long id;
+
+    private Long officialId;
+
+    private UserDto parent;
+
     private String name;
+
     private String phoneNumber;
+
     private String email;
+
+    private EmailStatusEnum emailStatus;
+
+    private AccountStatusEnum accountStatus;
+
+    private String mobileToken;
+
     private String type;
-    private String oneTimePassword;
+
+    private Long registerId;
+
+    private String referral;
+
     private UserGroupEnum userGroup;
 
-    @Builder.Default
-    private Long officialId = null;
-
-    @Builder.Default
-    private Long parentId = null;
+    List<UserDeviceDto> userDevices;
 }
