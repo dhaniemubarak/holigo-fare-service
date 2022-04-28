@@ -25,7 +25,7 @@ public class UserDto implements Serializable {
 
     private Long officialId;
 
-    private UserDto parent;
+    private UserParentDto parent;
 
     private String name;
 
