@@ -103,16 +103,16 @@ public class Calculate {
     }
 
     public void setIpcAmount(BigDecimal ipcAmount) {
-        this.ipcAmount = ipcAmount.setScale(2, RoundingMode.HALF_DOWN);
+        this.ipcAmount = ipcAmount.setScale(2, RoundingMode.DOWN);
     }
 
     public void setHpcAmount(BigDecimal nraAmount) {
-        BigDecimal hpcAmount = nraAmount.multiply(new BigDecimal(hpcPercentage)).setScale(0, RoundingMode.HALF_DOWN);
-        this.hpcAmount = hpcAmount;
+        BigDecimal hpcAmount = nraAmount.multiply(new BigDecimal(hpcPercentage)).setScale(0, RoundingMode.UP);
+        this.hpcAmount = hpcAmount.setScale(2, RoundingMode.UP);
     }
 
     public void setPrcAmount(BigDecimal prcAmount) {
-        this.prcAmount = prcAmount.setScale(2, RoundingMode.HALF_DOWN);
+        this.prcAmount = prcAmount.setScale(2, RoundingMode.DOWN);
     }
 
     public void setFareAmount(BigDecimal nraAmount) {
@@ -125,10 +125,10 @@ public class Calculate {
             setLossAmount(BigDecimal.valueOf(0.00));
         }
         BigDecimal fareAmount = getNtaAmount().add(margin).setScale(0, RoundingMode.UP);
-        this.fareAmount = fareAmount.setScale(2, RoundingMode.HALF_DOWN);
+        this.fareAmount = fareAmount.setScale(2, RoundingMode.DOWN);
     }
 
     public void setLossAmount(BigDecimal lossAmount) {
-        this.lossAmount = lossAmount.setScale(2, RoundingMode.HALF_DOWN);
+        this.lossAmount = lossAmount.setScale(2, RoundingMode.DOWN);
     }
 }
