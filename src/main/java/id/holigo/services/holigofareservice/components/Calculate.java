@@ -21,12 +21,12 @@ public class Calculate {
         setHvPercentage(marginAllocation.getHvPercentage());
         setPrPercentage(marginAllocation.getPrPercentage());
         setHpcPercentage(marginAllocation.getHpcPercentage());
-        setNtaAmount(ntaAmount.setScale(2, RoundingMode.HALF_DOWN));
+        setNtaAmount(ntaAmount.setScale(0, RoundingMode.DOWN));
         setProductId(productId);
-        setNraAmount(nraAmount.setScale(2, RoundingMode.HALF_DOWN));
-        setPcAmount(nraAmount);
+        setNraAmount(nraAmount.setScale(0, RoundingMode.DOWN));
+        setCpAmount(nraAmount);
         setMpAmount(nraAmount);
-        setPiAmount(nraAmount);
+        setIpAmount(nraAmount);
         setHvAmount(nraAmount);
         setHpAmount(nraAmount);
         setPrAmount(nraAmount);
@@ -58,47 +58,48 @@ public class Calculate {
     private BigDecimal prcAmount;
     private BigDecimal lossAmount;
 
-    public void setPcAmount(BigDecimal nraAmount) {
-        this.cpAmount = nraAmount.multiply(new BigDecimal(cpPercentage)).setScale(0, RoundingMode.DOWN);
-        this.cpAmount = this.cpAmount.setScale(2, RoundingMode.HALF_DOWN);
+    public void setCpAmount(BigDecimal nraAmount) {
+        this.cpAmount = nraAmount.multiply(BigDecimal.valueOf(cpPercentage)).setScale(0, RoundingMode.DOWN);
+        this.cpAmount = this.cpAmount.setScale(2, RoundingMode.DOWN);
+
     }
 
     public void setMpAmount(BigDecimal nraAmount) {
-        this.mpAmount = nraAmount.multiply(new BigDecimal(mpPercentage)).setScale(0, RoundingMode.DOWN);
-        this.mpAmount = this.mpAmount.setScale(2, RoundingMode.HALF_DOWN);
+        this.mpAmount = nraAmount.multiply(BigDecimal.valueOf(mpPercentage)).setScale(0, RoundingMode.DOWN);
+        this.mpAmount = this.mpAmount.setScale(2, RoundingMode.DOWN);
     }
 
-    public void setPiAmount(BigDecimal nraAmount) {
-        BigDecimal ip = nraAmount.multiply(new BigDecimal(ipPercentage)).setScale(0, RoundingMode.DOWN);
+    public void setIpAmount(BigDecimal nraAmount) {
+        BigDecimal ip = nraAmount.multiply(BigDecimal.valueOf(ipPercentage)).setScale(0, RoundingMode.DOWN);
         if (getUser().getOfficialId() == null) {
             setIpcAmount(ip);
-            this.ipAmount = new BigDecimal("0.00");
+            this.ipAmount = BigDecimal.valueOf(0.00);
         } else {
-            setIpcAmount(new BigDecimal("0.00"));
+            setIpcAmount(BigDecimal.valueOf(0.00));
             this.ipAmount = ip;
         }
-        this.ipAmount = this.ipAmount.setScale(2, RoundingMode.HALF_DOWN);
+        this.ipAmount = this.ipAmount.setScale(2, RoundingMode.DOWN);
     }
 
     public void setHvAmount(BigDecimal nraAmount) {
-        BigDecimal hvAMount = nraAmount.multiply(new BigDecimal(hvPercentage)).setScale(0, RoundingMode.DOWN);
-        this.hvAmount = hvAMount.setScale(2, RoundingMode.HALF_DOWN);
+        BigDecimal hvAmount = nraAmount.multiply(BigDecimal.valueOf(hvPercentage)).setScale(0, RoundingMode.DOWN);
+        this.hvAmount = hvAmount.setScale(2, RoundingMode.DOWN);
     }
 
     public void setHpAmount(BigDecimal nraAmount) {
         BigDecimal hpAmount = nraAmount.multiply(new BigDecimal(hpPercentage)).setScale(0, RoundingMode.DOWN);
-        this.hpAmount = hpAmount.setScale(2, RoundingMode.HALF_DOWN);
+        this.hpAmount = hpAmount.setScale(2, RoundingMode.DOWN);
 
     }
 
     public void setPrAmount(BigDecimal nraAmount) {
-        BigDecimal pr = nraAmount.multiply(new BigDecimal(prPercentage)).setScale(0, RoundingMode.DOWN);
+        BigDecimal pr = nraAmount.multiply(BigDecimal.valueOf(prPercentage)).setScale(0, RoundingMode.DOWN);
         if (getUser().getParent() == null) {
             setPrcAmount(pr);
-            this.prAmount = new BigDecimal("0.00");
+            this.prAmount = BigDecimal.valueOf(0.00);
         } else {
-            setPrcAmount(new BigDecimal("0.00"));
-            this.prAmount = pr.setScale(2, RoundingMode.HALF_DOWN);
+            setPrcAmount(BigDecimal.valueOf(0.00));
+            this.prAmount = pr.setScale(2, RoundingMode.DOWN);
         }
     }
 
@@ -107,7 +108,7 @@ public class Calculate {
     }
 
     public void setHpcAmount(BigDecimal nraAmount) {
-        BigDecimal hpcAmount = nraAmount.multiply(new BigDecimal(hpcPercentage)).setScale(0, RoundingMode.UP);
+        BigDecimal hpcAmount = nraAmount.multiply(BigDecimal.valueOf(hpcPercentage)).setScale(0, RoundingMode.UP);
         this.hpcAmount = hpcAmount.setScale(2, RoundingMode.UP);
     }
 
@@ -116,7 +117,6 @@ public class Calculate {
     }
 
     public void setFareAmount(BigDecimal nraAmount) {
-
         BigDecimal margin = getCpAmount().add(getHpAmount()).add(getHvAmount()).add(getIpcAmount()).add(getPrcAmount())
                 .add(getIpAmount()).add(getMpAmount()).add(getPrAmount()).add(getHpcAmount());
         if (nraAmount.compareTo(margin) > 0) {
@@ -125,7 +125,7 @@ public class Calculate {
             setLossAmount(BigDecimal.valueOf(0.00));
         }
         BigDecimal fareAmount = getNtaAmount().add(margin).setScale(0, RoundingMode.UP);
-        this.fareAmount = fareAmount.setScale(2, RoundingMode.DOWN);
+        this.fareAmount = fareAmount.setScale(2, RoundingMode.UP);
     }
 
     public void setLossAmount(BigDecimal lossAmount) {
