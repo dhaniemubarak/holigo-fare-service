@@ -21,16 +21,26 @@ import id.holigo.services.holigofareservice.services.user.UserService;
 @Service
 public class FareServiceImpl implements FareService {
 
-    @Autowired
     private FareRepository fareRepository;
 
-    @Autowired
     private MarginAllocationRepository marginRepository;
 
-    @Autowired
     private UserService userService;
 
-    private MarginAllocation marginAllocation;
+    @Autowired
+    public void setFareRepository(FareRepository fareRepository) {
+        this.fareRepository = fareRepository;
+    }
+
+    @Autowired
+    public void setMarginRepository(MarginAllocationRepository marginRepository) {
+        this.marginRepository = marginRepository;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public Fare calculate(Long userId, Integer productId, BigDecimal ntaAmount, BigDecimal nraAmount) {
@@ -45,8 +55,7 @@ public class FareServiceImpl implements FareService {
             } else {
                 Calculate calculation = new Calculate(user, getMarginAllocation(user, productId), ntaAmount, nraAmount);
                 Fare fareCalculation = setFareAllocation(user, productId, nraAmount, calculation);
-                Fare fareSaved = fareRepository.save(fareCalculation);
-                fare = fareSaved;
+                fare = fareRepository.save(fareCalculation);
             }
         } catch (JsonProcessingException | JMSException e) {
             e.printStackTrace();
@@ -57,19 +66,16 @@ public class FareServiceImpl implements FareService {
     private MarginAllocation getMarginAllocation(UserDto user, Integer productId) {
         Optional<MarginAllocation> fetchMarginAllocation = marginRepository.findByUserGroupAndProductId(
                 user.getUserGroup(), productId);
-        if (fetchMarginAllocation.isPresent()) {
-            marginAllocation = fetchMarginAllocation.get();
-        } else {
-            marginAllocation = MarginAllocation.builder().userGroup(user.getUserGroup())
-                    .productId(productId)
-                    .cpPercentage(0.00)
-                    .ipPercentage(0.2)
-                    .mpPercentage(0.00)
-                    .hvPercentage(0.05)
-                    .prPercentage(0.05)
-                    .hpPercentage(0.00)
-                    .hpcPercentage(0.05).build();
-        }
+        MarginAllocation marginAllocation;
+        marginAllocation = fetchMarginAllocation.orElseGet(() -> MarginAllocation.builder().userGroup(user.getUserGroup())
+                .productId(productId)
+                .cpPercentage(0.00)
+                .ipPercentage(0.2)
+                .mpPercentage(0.00)
+                .hvPercentage(0.05)
+                .prPercentage(0.05)
+                .hpPercentage(0.00)
+                .hpcPercentage(0.05).build());
         return marginAllocation;
     }
 

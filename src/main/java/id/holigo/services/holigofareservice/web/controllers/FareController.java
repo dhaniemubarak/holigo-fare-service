@@ -2,6 +2,7 @@ package id.holigo.services.holigofareservice.web.controllers;
 
 import java.math.BigDecimal;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import id.holigo.services.holigofareservice.repositories.FareRepository;
 import id.holigo.services.holigofareservice.services.FareService;
 import id.holigo.services.holigofareservice.web.mappers.FareMapper;
 
+@Slf4j
 @RestController
 public class FareController {
 
@@ -38,6 +40,7 @@ public class FareController {
     public ResponseEntity<FareDto> get(@RequestParam("userId") Long userId,
             @RequestParam("productId") Integer productId, @RequestParam("ntaAmount") BigDecimal ntaAmount,
             @RequestParam("nraAmount") BigDecimal nraAmount) {
+        log.info("get running...");
         Fare fare = fareService.calculate(userId, productId, ntaAmount, nraAmount);
 
         return new ResponseEntity<>(fareMapper.fareToFareDto(fare), HttpStatus.OK);

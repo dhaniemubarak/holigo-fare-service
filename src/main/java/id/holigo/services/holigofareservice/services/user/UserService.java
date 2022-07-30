@@ -9,9 +9,9 @@ import id.holigo.services.common.model.UserDto;
 public interface UserService {
 
     Boolean isExistsByPhoneNumber(String phoneNumber)
-            throws JMSException, JsonMappingException, JsonProcessingException;
+            throws JMSException, JsonProcessingException;
 
-    UserDto getUserByPhoneNumber(String phoneNumber) throws JMSException, JsonMappingException, JsonProcessingException;
+    UserDto getUserByPhoneNumber(String phoneNumber) throws JMSException, JsonProcessingException;
 
-    UserDto getUserById(Long userId)  throws JsonMappingException, JsonProcessingException, JMSException;
+    UserDto getUserById(Long userId) throws JsonProcessingException, JMSException;
 }
