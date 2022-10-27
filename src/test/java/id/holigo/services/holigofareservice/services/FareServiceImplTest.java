@@ -52,7 +52,7 @@ public class FareServiceImplTest {
                     .productId(productId)
                     .cpPercentage(0.55)
                     .ipPercentage(0.2)
-                    .mpPercentage(0.05)
+                    .mpPercentage(0.10)
                     .hvPercentage(0.05)
                     .prPercentage(0.05)
                     .hpPercentage(0.00)
@@ -64,7 +64,7 @@ public class FareServiceImplTest {
     void testCalculate() {
         Calculate calculate = new Calculate(user, marginAllocation, nraAmount, nraAmount);
 
-        assertEquals(calculate.getNraAmount(), nraAmount.setScale(2));
+        assertEquals(calculate.getNraAmount().setScale(2), nraAmount.setScale(2));
         assertEquals(BigDecimal.valueOf(55000.00).setScale(2),
                 calculate.getCpAmount());
         assertEquals(new BigDecimal(0.00).setScale(2),
