@@ -3,7 +3,6 @@ package id.holigo.services.holigofareservice.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Optional;
 
 import javax.jms.JMSException;
@@ -40,24 +39,20 @@ public class FareServiceImplTest {
     MarginAllocation marginAllocation;
 
     @BeforeEach
-    void setUp() throws JsonMappingException, JsonProcessingException, JMSException {
+    void setUp() throws JsonProcessingException, JMSException {
         user = userService.getUserById(5L);
-        nraAmount = BigDecimal.valueOf(100000.00);
-        ntaAmount = BigDecimal.valueOf(1000000.00);
+        nraAmount = new BigDecimal(100000);
+        ntaAmount = new BigDecimal(1000000);
         Optional<MarginAllocation> fetchMarginAllocation = marginRepository
                 .findByUserGroupAndProductId(user.getUserGroup(), productId);
-        if (fetchMarginAllocation.isPresent()) {
-            marginAllocation = fetchMarginAllocation.get();
-        } else {
-            marginAllocation = MarginAllocation.builder().userGroup(user.getUserGroup())
-                    .productId(productId)
-                    .cpPercentage(0.55)
-                    .ipPercentage(0.2)
-                    .mpPercentage(0.05)
-                    .hvPercentage(0.05)
-                    .prPercentage(0.05)
-                    .hpPercentage(0.00)
-                    .hpcPercentage(0.05).build();
-        }
+        marginAllocation = fetchMarginAllocation.orElseGet(() -> MarginAllocation.builder().userGroup(user.getUserGroup())
+                .productId(productId)
+                .cpPercentage(0.55)
+                .ipPercentage(0.2)
+                .mpPercentage(0.10)
+                .hvPercentage(0.05)
+                .prPercentage(0.05)
+                .hpPercentage(0.00)
+                .hpcPercentage(0.05).build());
     }
 }

@@ -7,9 +7,11 @@ import id.holigo.services.common.model.UserDto;
 import id.holigo.services.holigofareservice.domain.MarginAllocation;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
+@Slf4j
 public class Calculate {
 
     public Calculate(UserDto user, MarginAllocation marginAllocation, BigDecimal ntaAmount, BigDecimal nraAmount) {
@@ -24,13 +26,13 @@ public class Calculate {
         setNtaAmount(ntaAmount.setScale(0, RoundingMode.DOWN));
         setProductId(productId);
         setNraAmount(nraAmount.setScale(0, RoundingMode.DOWN));
-        setCpAmount(nraAmount);
         setMpAmount(nraAmount);
         setIpAmount(nraAmount);
         setHvAmount(nraAmount);
         setHpAmount(nraAmount);
         setPrAmount(nraAmount);
         setHpcAmount(nraAmount);
+        setCpAmount(nraAmount);
         setFareAmount(nraAmount);
     }
 
@@ -59,8 +61,22 @@ public class Calculate {
     private BigDecimal lossAmount;
 
     public void setCpAmount(BigDecimal nraAmount) {
-        this.cpAmount = nraAmount.multiply(BigDecimal.valueOf(cpPercentage)).setScale(0, RoundingMode.DOWN);
-        this.cpAmount = this.cpAmount.setScale(2, RoundingMode.DOWN);
+        double totalPercentage = getCpPercentage() + getMpPercentage() + getIpPercentage() +
+                getHpPercentage() + getHvPercentage() + getPrPercentage() + getHpcPercentage();
+        if (totalPercentage == 1) {
+            this.cpAmount = nraAmount.subtract(getMpAmount()
+                    .add(getIpAmount())
+                    .add(getHpAmount())
+                    .add(getHvAmount())
+                    .add(getPrAmount())
+                    .add(getIpcAmount())
+                    .add(getHpcAmount())
+                    .add(getPrcAmount()));
+        } else {
+            this.cpAmount = nraAmount.multiply(BigDecimal.valueOf(cpPercentage)).setScale(0, RoundingMode.UP);
+            this.cpAmount = this.cpAmount.setScale(2, RoundingMode.UP);
+        }
+
 
     }
 
