@@ -63,7 +63,7 @@ public class Calculate {
     public void setCpAmount(BigDecimal nraAmount) {
         double totalPercentage = getCpPercentage() + getMpPercentage() + getIpPercentage() +
                 getHpPercentage() + getHvPercentage() + getPrPercentage() + getHpcPercentage();
-        if (totalPercentage == 1) {
+        if ((int) totalPercentage == 1) {
             this.cpAmount = nraAmount.subtract(getMpAmount()
                     .add(getIpAmount())
                     .add(getHpAmount())
@@ -76,8 +76,6 @@ public class Calculate {
             this.cpAmount = nraAmount.multiply(BigDecimal.valueOf(cpPercentage)).setScale(0, RoundingMode.UP);
             this.cpAmount = this.cpAmount.setScale(2, RoundingMode.UP);
         }
-
-
     }
 
     public void setMpAmount(BigDecimal nraAmount) {
@@ -142,10 +140,6 @@ public class Calculate {
         }
         BigDecimal fareAmount = getNtaAmount().add(margin).setScale(0, RoundingMode.UP);
         this.fareAmount = fareAmount.setScale(2, RoundingMode.UP);
-        if (getLossAmount().compareTo(BigDecimal.ZERO) > 0) {
-            this.fareAmount = this.fareAmount.add(getLossAmount());
-            setLossAmount(BigDecimal.valueOf(0.00));
-        }
     }
 
     public void setLossAmount(BigDecimal lossAmount) {

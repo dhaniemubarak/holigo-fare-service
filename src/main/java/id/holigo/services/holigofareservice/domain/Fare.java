@@ -21,6 +21,7 @@ import id.holigo.services.common.model.UserGroupEnum;
 @Getter
 @Setter
 @Entity
+@Builder
 public class Fare {
 
     @Id
