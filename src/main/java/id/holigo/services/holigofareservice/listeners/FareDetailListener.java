@@ -21,14 +21,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FareDetailListener {
 
-    @Autowired
     private final JmsTemplate jmsTemplate;
 
-    @Autowired
     private final FareService fareService;
 
-    @Autowired
     private FareMapper fareMapper;
+
+    @Autowired
+    public void setFareMapper(FareMapper fareMapper) {
+        this.fareMapper = fareMapper;
+    }
 
     @JmsListener(destination = JmsConfig.GET_DETAIL_FARE_PRODUCT)
     public void getDetailFareProduct(@Payload FareDetailDto fareDetailDto, Message message) throws JMSException {

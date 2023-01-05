@@ -126,6 +126,10 @@ public class Calculate {
         }
         BigDecimal fareAmount = getNtaAmount().add(margin).setScale(0, RoundingMode.UP);
         this.fareAmount = fareAmount.setScale(2, RoundingMode.UP);
+        if (getLossAmount().compareTo(BigDecimal.ZERO) > 0) {
+            this.fareAmount = this.fareAmount.add(getLossAmount());
+            setLossAmount(BigDecimal.valueOf(0.00));
+        }
     }
 
     public void setLossAmount(BigDecimal lossAmount) {

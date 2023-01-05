@@ -55,10 +55,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long userId) throws JsonProcessingException, JMSException {
-        log.info("getUserById is running ...");
         UserDto userDto = UserDto.builder().id(userId).build();
         Message received = jmsTemplate.sendAndReceive(JmsConfig.GET_USER_DATA_BY_ID_QUEUE, session -> {
-            log.info("Create message");
             Message userDataMessage;
             try {
                 userDataMessage = session.createTextMessage(objectMapper.writeValueAsString(userDto));
@@ -70,7 +68,6 @@ public class UserServiceImpl implements UserService {
         });
 
         assert received != null;
-        log.info("Result ... {}", received.getBody(String.class));
         return objectMapper.readValue(received.getBody(String.class), UserDto.class);
     }
 

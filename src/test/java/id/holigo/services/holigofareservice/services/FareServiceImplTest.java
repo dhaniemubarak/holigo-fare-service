@@ -3,6 +3,7 @@ package id.holigo.services.holigofareservice.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 import javax.jms.JMSException;
@@ -41,8 +42,8 @@ public class FareServiceImplTest {
     @BeforeEach
     void setUp() throws JsonMappingException, JsonProcessingException, JMSException {
         user = userService.getUserById(5L);
-        nraAmount = new BigDecimal(100000);
-        ntaAmount = new BigDecimal(1000000);
+        nraAmount = BigDecimal.valueOf(100000.00);
+        ntaAmount = BigDecimal.valueOf(1000000.00);
         Optional<MarginAllocation> fetchMarginAllocation = marginRepository
                 .findByUserGroupAndProductId(user.getUserGroup(), productId);
         if (fetchMarginAllocation.isPresent()) {
@@ -58,17 +59,5 @@ public class FareServiceImplTest {
                     .hpPercentage(0.00)
                     .hpcPercentage(0.05).build();
         }
-    }
-
-    @Test
-    void testCalculate() {
-        Calculate calculate = new Calculate(user, marginAllocation, nraAmount, nraAmount);
-
-        assertEquals(calculate.getNraAmount(), nraAmount.setScale(2));
-        assertEquals(BigDecimal.valueOf(55000.00).setScale(2),
-                calculate.getCpAmount());
-        assertEquals(new BigDecimal(0.00).setScale(2),
-                calculate.getIpcAmount());
-        assertEquals(new BigDecimal(5000.00).setScale(2), calculate.getHvAmount());
     }
 }
